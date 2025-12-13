@@ -82,10 +82,14 @@ public class UserService implements IUserService{
     @Override
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         String email = authentication.getName();
-        System.out.println("EMAIL: " + email);
-        return userRepo.findByEmail(email);
+
+        // 修改這裡：加上 null 檢查
+        User user = userRepo.findByEmail(email);
+        if (user == null) {
+            throw new ResourceNotFoundException("User not found with email: " + email);
+        }
+        return user;
     }
 
 //    @Override

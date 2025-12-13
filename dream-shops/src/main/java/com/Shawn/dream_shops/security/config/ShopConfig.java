@@ -35,7 +35,7 @@ public class ShopConfig {
     private final JwtAuthEntryPoint authEntryPoint;
 
     private static final List<String> SECURED_URLS
-            = List.of("/api/vi/carts/**", "/api/vi/cartItems/**");
+            = List.of("/api/v1/carts/**", "/api/v1/cartItems/**");
     // 這兩個 URL 被要求 必須驗證（authenticated）。
 
     @Bean
@@ -75,7 +75,7 @@ public class ShopConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(SECURED_URLS.toArray(String[]::new)).authenticated()
+                 .authorizeHttpRequests(auth -> auth.requestMatchers(SECURED_URLS.toArray(String[]::new)).authenticated()
                         .anyRequest().permitAll());
 
         // 不允許 csrf 跨站存取

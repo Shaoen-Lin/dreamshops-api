@@ -27,9 +27,9 @@ public class CartItem {
     // 因為一個 Product 可以出現在不同的CartItem中
     private Product product;
 
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "cart_id")
+    @JsonIgnore
     private Cart cart;
 
     public void setTotalPrice()

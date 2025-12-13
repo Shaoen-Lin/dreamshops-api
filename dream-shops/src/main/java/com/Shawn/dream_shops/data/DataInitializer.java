@@ -1,7 +1,11 @@
 package com.Shawn.dream_shops.data;
 
+import com.Shawn.dream_shops.model.Category;
+import com.Shawn.dream_shops.model.Product;
 import com.Shawn.dream_shops.model.Role;
 import com.Shawn.dream_shops.model.User;
+import com.Shawn.dream_shops.repository.CategoryRepository;
+import com.Shawn.dream_shops.repository.ProductRepository;
 import com.Shawn.dream_shops.repository.RoleRepository;
 import com.Shawn.dream_shops.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -12,6 +16,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Transactional
@@ -25,6 +30,10 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
     private final RoleRepository roleRepo;
     @Autowired
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private final ProductRepository productRepo;
+    @Autowired
+    private final CategoryRepository categoryRepo;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
@@ -78,5 +87,52 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
             roles.stream()
                     .filter(role -> roleRepo.findByName(role). isEmpty())
                     .map(Role::new).forEach(roleRepo::save);
+    }
+
+    private void createDefaultProductsIfNotExists() {
+
+        // 1. 準備分類
+        Category catElectronics = categoryRepo.findByName("Electronics");
+        if (catElectronics == null) {
+            catElectronics = new Category("Electronics");
+            categoryRepo.save(catElectronics);
+        }
+
+        Category catAudio = categoryRepo.findByName("Audio");
+        if (catAudio == null) {
+            catAudio = new Category("Audio");
+            categoryRepo.save(catAudio);
+        }
+
+        // 2. 建立商品
+        createProduct("Apple Watch", "Apple", new BigDecimal("400.00"), 47,
+                "Apple new AI Watch", catElectronics);
+
+        createProduct("Apple Pencil", "Apple", new BigDecimal("100.00"), 200,
+                "Apple new Apple Pencil", catElectronics);
+
+        createProduct("Apple Airpods Pro", "Apple", new BigDecimal("250.00"), 996,
+                "Apple new Earphone", catAudio);
+
+        createProduct("Samsung Watch", "Samsung", new BigDecimal("200.00"), 500,
+                "Samsung new AI Watch", catElectronics);
+    }
+
+    private void createProduct(String name, String brand, BigDecimal price, int inventory, String description, Category category) {
+
+        if (productRepo.existsByName(name)) {
+            return;
+        }
+
+        Product product = new Product();
+        product.setName(name);
+        product.setBrand(brand);
+        product.setPrice(price);
+        product.setInventory(inventory);
+        product.setDescription(description);
+        product.setCategory(category);
+
+        productRepo.save(product);
+        System.out.println("Default product " + name + " created.");
     }
 }

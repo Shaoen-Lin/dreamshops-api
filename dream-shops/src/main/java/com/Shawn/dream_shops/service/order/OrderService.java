@@ -40,6 +40,10 @@ public class OrderService implements IOrderService{
     public Order placeOrder(Long userId) { // 每次購買都會把購物車清空
         Cart cart = cartService.getCartByUserId(userId);
 
+        if (cart == null) {
+            throw new ResourceNotFoundException("Cart not found for user id: " + userId);
+        }
+
         // 會先設置好一些訂單內容
         Order order = createOrder(cart);
         // 把購物車的設定為 訂單項目

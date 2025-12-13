@@ -1,5 +1,6 @@
 package com.Shawn.dream_shops.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +29,7 @@ public class Image {
 
     @ManyToOne // means many images belong to one product
     @JoinColumn(name = "product_id") // Foreign key = 另一個表格加入的 PK 叫做 FK ( FK 要加再「多」的那邊 )
+    @JsonIgnore
     private Product product;
 
 }

@@ -35,16 +35,6 @@ public class OrderController {
         }
     }
 
-//    @PostMapping("/order")
-//    public ResponseEntity<ApiResponse> createOrder(@RequestParam Long userId){
-//        try {
-//            OrderDto orderDto = orderService.placeOrder(userId);
-//            return ResponseEntity.ok(new ApiResponse("Item Order Success", orderDto));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Item Order Error", e.getMessage()));
-//        }
-//    }
-
     @GetMapping("/{orderId}/order")
     public ResponseEntity<ApiResponse> getOrderById(@PathVariable Long orderId)
     {

@@ -32,8 +32,18 @@ public class CartItemController {
                                                      @RequestParam Integer quantity)
     {
         try {
-            User user = userService.getAuthenticatedUser(); // 代表 Long 型別的 1
-            Cart cart = cartService.initialNewCart(user);
+            User user = userService.getAuthenticatedUser();
+
+            if (user == null) {
+                return ResponseEntity.status(NOT_FOUND)
+                        .body(new ApiResponse("User not found in database. Please login again.", null));
+            }
+
+            // 邏輯：先檢查有沒有車，沒有才建
+            Cart cart = cartService.getCartByUserId(user.getId());
+            if (cart == null) {
+                cart = cartService.initialNewCart(user);
+            }
             cartItemService.addCartItem(cart.getId(), productId, quantity);
             return ResponseEntity.ok(new ApiResponse("Successfully Add Item to Cart id: " + cart.getId(), cart.getId()));
 

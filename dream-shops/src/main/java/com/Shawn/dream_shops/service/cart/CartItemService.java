@@ -7,6 +7,7 @@ import com.Shawn.dream_shops.model.Product;
 import com.Shawn.dream_shops.repository.CartItemRepository;
 import com.Shawn.dream_shops.repository.CartRepository;
 import com.Shawn.dream_shops.service.product.IProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class CartItemService implements ICartItemService{
     @Autowired
     private final ICartService CartService;
 
+    @Transactional
     @Override
     public void addCartItem(Long cartID, Long productId, int quantity) {
         Cart cart = CartService.getCart(cartID);
@@ -51,7 +53,6 @@ public class CartItemService implements ICartItemService{
 
         // 最後要儲存到資料庫
         cartItem.setTotalPrice();
-        CartItemRepo.save(cartItem);
         cart.addItem(cartItem);
         CartRepo.save(cart);
     }

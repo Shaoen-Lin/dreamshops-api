@@ -22,6 +22,7 @@ public class OrderItem { // 指這次訂購的所有東西
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
 
     @ManyToOne

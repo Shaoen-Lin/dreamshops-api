@@ -42,9 +42,10 @@ public class CartService implements ICartService{
     @Override
     public void clearCart(Long id) {
         Cart cart = getCart(id);
-        CartItemRepo.deleteAllByCartId(id); // 這個 Cart 的 所有 item 都要刪除 才是 deleteAll
+        //CartItemRepo.deleteAllByCartId(id); // 這個 Cart 的 所有 item 都要刪除 才是 deleteAll
         cart.getItems().clear(); // getItems 是因為 Lombok
-        CartRepo.deleteById(id);
+        cart.setTotalAmount(BigDecimal.ZERO);
+        CartRepo.save(cart);       // <--- 改成這樣
     }
 
     @Override

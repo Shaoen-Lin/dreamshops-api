@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+    boolean existsByName(String name);
+
     List<Product> findByCategoryName(String category);
     // 這裡會發現如果 直接寫 findByCategory 會發現 JPA 會以為我們要給他 category 物件 
     // 但我們其實要給的是一個string 所以名稱改成 findByCategoryName

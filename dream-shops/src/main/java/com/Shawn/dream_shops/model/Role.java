@@ -1,5 +1,6 @@
 package com.Shawn.dream_shops.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class Role {
     }
 
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private Collection<User> users = new HashSet<>();
     // List, Set, Queue … 都是繼承 Collection 的子介面。 所以可以打 Collection 再賦予它不同的 Data Type
 }
