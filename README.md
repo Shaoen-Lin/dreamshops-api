@@ -16,7 +16,7 @@ A production-ready RESTful e-commerce backend built with **Spring Boot 3**, feat
 | Framework | Spring Boot 3.3.2 |
 | Security | Spring Security + JWT (jjwt) |
 | Persistence | Spring Data JPA + Hibernate |
-| Database | MySQL |
+| Database | Postgre |
 | Mapping | ModelMapper |
 | Build Tool | Maven |
 | Utilities | Lombok |
